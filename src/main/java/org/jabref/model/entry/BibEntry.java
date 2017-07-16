@@ -1,5 +1,8 @@
 package org.jabref.model.entry;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -91,7 +94,7 @@ public class BibEntry implements Cloneable {
      * @param id   The ID to be used
      * @param type The type to set. May be null or empty. In that case, DEFAULT_TYPE is used.
      */
-    private BibEntry(String id, String type) {
+    public BibEntry(String id, String type) {
         Objects.requireNonNull(id, "Every BibEntry must have an ID");
 
         this.id = id;
@@ -214,15 +217,15 @@ public class BibEntry implements Cloneable {
     /**
      * Sets this entry's type.
      */
-    public void setType(String type) {
-        setType(type, EntryEventSource.LOCAL);
+    public void setType(EntryType type) {
+        this.setType(type.getName());
     }
 
     /**
      * Sets this entry's type.
      */
-    public void setType(EntryType type) {
-        this.setType(type.getName());
+    public void setType(String type) {
+        setType(type, EntryEventSource.LOCAL);
     }
 
     /**
@@ -404,6 +407,23 @@ public class BibEntry implements Cloneable {
         if (value.isEmpty()) {
             return clearField(fieldName);
         }
+              
+        //verificação do ano
+        if(fieldName.equals("year")) {
+        	try {
+        		DateFormat df = new SimpleDateFormat("yyyy");
+                df.setLenient(false);
+                df.parse(value);
+            } catch (ParseException e) {
+            	return Optional.empty();
+            }
+        }
+        
+        //verificação da key
+        if(fieldName.equals("bibtexkey") && (!(value.charAt(0) >= 'A' && value.charAt(0) <= 'Z' 
+        		|| value.charAt(0) >= 'a' && value.charAt(0) <= 'z') || value.length() < 2)) {
+        	return Optional.empty();
+        }
 
         String oldValue = getField(fieldName).orElse(null);
         if (value.equals(oldValue)) {
@@ -413,7 +433,7 @@ public class BibEntry implements Cloneable {
         if (BibEntry.ID_FIELD.equals(fieldName)) {
             throw new IllegalArgumentException("The field name '" + name + "' is reserved");
         }
-
+       
         changed = true;
 
         fields.put(fieldName, value.intern());
@@ -824,6 +844,12 @@ public class BibEntry implements Cloneable {
 
     public ObjectBinding<String> getFieldBinding(String fieldName) {
         return Bindings.valueAt(fields, fieldName);
+    }
+
+    public Optional<FieldChange> addFile(LinkedFile file) {
+        List<LinkedFile> linkedFiles = getFiles();
+        linkedFiles.add(file);
+        return setFiles(linkedFiles);
     }
 
     private interface GetFieldInterface {
