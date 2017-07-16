@@ -1,3 +1,34 @@
+# Engenharia de Software 2 - Trabalho Prático
+**Professor Auri Vincenzi - 1º Semestre 2017**
+
+## GRUPO:
+> - Alan R. da S. Brandini - 556246 (OWNER)
+> - Bruno C. de Padua - 595012
+> - Gabriel T. Caschera - 595225 
+> - João Guilherme Di F. Luchetti - 595055
+> - Rafael Uryu - 595187
+
+O trabalho têm o objetivo de colocar em prática os conhecimentos de teste e manutenção de Software adquiridos durante a disciplina. Assim, foi testada a Ferramenta para referências bibliográficas JabRef (http://www.jabref.org/), realizando-se manutenções perfectivas e implementando-se uma funcionalidade e inserindo à ferramenta.
+
+As tarefas realizadas pela equipe formas separadas a seguir, indicando-se seus respectivos locais:
+
+## Testes:
+> - Inserção de itens bibliográfico - categorias book e article 
+>> - Arquivo: https://github.com/alanbrandini/DC-UFSCar-ES2-201701-Grupo01/blob/master/src/test/java/TestesES2/NewEntryTestes.java
+> - Importação de itens bibliográficos na base corrente
+>> - Arquivo: https://github.com/alanbrandini/DC-UFSCar-ES2-201701-Grupo01/blob/master/src/test/java/TestesES2/ImportTestes.java
+
+## Manutenções perfectivas:
+> - Validar, na funcionalidade Inserção de item bibliográfico (BibTeX -> New entry), os campos
+>> - Year - deve ser um ano válido (de acordo com o calendário da linguagem Java)
+>> - Bibtexkey - definido pelo usuário ou automaticamente, deve ter no mínimo 2 caracteres, sendo o primeiro uma letra maiúscula ou minúscula
+>> - Arquivo: https://github.com/alanbrandini/DC-UFSCar-ES2-201701-Grupo01/blob/master/src/main/java/org/jabref/model/entry/BibEntry.java
+> - Oferecer, na funcionalidade Importação de itens bibliográficos na base corrente (File -> Import into current database), as opções
+>> - Importar arquivo em formato CSV, ODS, XLX ou XLSX
+>> - Criar um novo arquivo (database) quando existirem entradas duplicadas no arquivo corrente (current database) e o arquivo que está sendo importado (considerando formatos BibTeX e CSV)
+
+
+
 # JabRef Development Version
 
 [![Build Status](https://travis-ci.org/JabRef/jabref.svg?branch=master)](https://travis-ci.org/JabRef/jabref)
