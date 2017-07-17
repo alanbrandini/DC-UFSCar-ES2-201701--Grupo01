@@ -224,4 +224,124 @@ public class NewEntryTestes {
 
         assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void testAno1() throws IOException {
+		StringWriter stringWriter = new StringWriter();
+
+		BibEntry entry = new BibEntry("book");
+        entry.setField("year", "2003");
+        
+        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
+
+        String actual = stringWriter.toString();
+
+        String expected =  OS.NEWLINE + "@Book{," + OS.NEWLINE +
+						"  year = {2003}," + OS.NEWLINE +
+						"}" + OS.NEWLINE;
+
+        assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testAno2() throws IOException {
+		StringWriter stringWriter = new StringWriter();
+
+		BibEntry entry = new BibEntry("book");
+        entry.setField("year", "batata");
+        
+        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
+
+        String actual = stringWriter.toString();
+
+        String expected =  OS.NEWLINE + "@Book{," + OS.NEWLINE +
+						"}" + OS.NEWLINE;
+
+        assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testAno3() throws IOException {
+		StringWriter stringWriter = new StringWriter();
+
+		BibEntry entry = new BibEntry("book");
+        entry.setField("year", "");
+        
+        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
+
+        String actual = stringWriter.toString();
+
+        String expected =  OS.NEWLINE + "@Book{," + OS.NEWLINE +
+						"}" + OS.NEWLINE;
+
+        assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testBibtexkey1() throws IOException {
+		StringWriter stringWriter = new StringWriter();
+
+		BibEntry entry = new BibEntry("book");
+        entry.setCiteKey("d");
+        
+        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
+
+        String actual = stringWriter.toString();
+
+        String expected =  OS.NEWLINE + "@Book{," + OS.NEWLINE +
+						"}" + OS.NEWLINE;
+
+        assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testBibtexkey2() throws IOException {
+		StringWriter stringWriter = new StringWriter();
+
+		BibEntry entry = new BibEntry("book");
+        entry.setCiteKey("1darwin");
+        
+        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
+
+        String actual = stringWriter.toString();
+
+        String expected =  OS.NEWLINE + "@Book{," + OS.NEWLINE +
+						"}" + OS.NEWLINE;
+
+        assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testBibtexkey3() throws IOException {
+		StringWriter stringWriter = new StringWriter();
+
+		BibEntry entry = new BibEntry("book");
+        entry.setCiteKey("Darwin");
+        
+        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
+
+        String actual = stringWriter.toString();
+
+        String expected =  OS.NEWLINE + "@Book{Darwin," + OS.NEWLINE +
+						"}" + OS.NEWLINE;
+
+        assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testBibtexkey4() throws IOException {
+		StringWriter stringWriter = new StringWriter();
+
+		BibEntry entry = new BibEntry("book");
+        entry.setCiteKey("");
+        
+        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
+
+        String actual = stringWriter.toString();
+
+        String expected =  OS.NEWLINE + "@Book{," + OS.NEWLINE +
+						"}" + OS.NEWLINE;
+
+        assertEquals(expected, actual);
+	}
 }
