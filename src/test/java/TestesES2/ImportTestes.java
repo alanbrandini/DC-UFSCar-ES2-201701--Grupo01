@@ -61,6 +61,7 @@ public class ImportTestes {
         Collection<Object[]> result = new ArrayList<>();
 
         result.add(new Object[] {"fileformat/RisImporterTest1.ris", "ris", 1});
+        result.add(new Object[] {"fileformat/CSVTest.csv", "csv", 1}); //adição do csv
         result.add(new Object[] {"fileformat/IsiImporterTest1.isi", "isi", 1});
         result.add(new Object[] {"fileformat/SilverPlatterImporterTest1.txt", "silverplatter", 1});
         result.add(new Object[] {"fileformat/RepecNepImporterTest2.txt", "repecnep", 1});
