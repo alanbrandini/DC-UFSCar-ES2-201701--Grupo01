@@ -15,6 +15,7 @@ public enum FileExtensions {
     //important: No dot before the extension!
     BIBTEX_DB(String.format("%1s %2s", "BibTex", Localization.lang("Library")), "bib"),
     BIBTEXML(Localization.lang("%0 file", "BibTeXML"), "bibx", "xml"),
+    CSV(Localization.lang("%0 file", "CSV"), "csv"),
     BILBIOSCAPE(Localization.lang("%0 file", "Biblioscape"), "txt"),
     COPAC(Localization.lang("%0 file", "Copac"), "txt"),
     CITATION_STYLE(Localization.lang("%0 file", "CSL"), "csl"),
