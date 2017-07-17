@@ -25,8 +25,9 @@ As tarefas realizadas pela equipe formas separadas a seguir, indicando-se seus r
 >> - Arquivo: https://github.com/alanbrandini/DC-UFSCar-ES2-201701-Grupo01/blob/master/src/main/java/org/jabref/model/entry/BibEntry.java
 > - Oferecer, na funcionalidade Importação de itens bibliográficos na base corrente (File -> Import into current database), as opções
 >> - Importar arquivo em formato CSV, ODS, XLX ou XLSX
+>> - Arquivo: https://github.com/alanbrandini/DC-UFSCar-ES2-201701-Grupo01/blob/master/src/main/java/org/jabref/logic/importer/fileformat/CSVImporter.java
 >> - Criar um novo arquivo (database) quando existirem entradas duplicadas no arquivo corrente (current database) e o arquivo que está sendo importado (considerando formatos BibTeX e CSV)
-
+>> - Arquivo: https://github.com/alanbrandini/DC-UFSCar-ES2-201701-Grupo01/blob/master/src/main/java/org/jabref/gui/importer/ImportInspectionDialog.java
 
 
 # JabRef Development Version
