@@ -88,12 +88,14 @@ import org.jabref.model.Defaults;
 import org.jabref.model.FieldChange;
 import org.jabref.model.database.BibDatabase;
 import org.jabref.model.database.BibDatabaseContext;
+import org.jabref.model.database.BibDatabaseMode;
 import org.jabref.model.entry.AuthorList;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.FieldName;
 import org.jabref.model.entry.FieldProperty;
 import org.jabref.model.entry.IdGenerator;
 import org.jabref.model.entry.InternalBibtexFields;
+import org.jabref.model.entry.LinkedFile;
 import org.jabref.model.groups.AllEntriesGroup;
 import org.jabref.model.groups.GroupEntryChanger;
 import org.jabref.model.groups.GroupTreeNode;
@@ -717,6 +719,9 @@ public class ImportInspectionDialog extends JabRefDialog implements ImportInspec
             // First check if we are supposed to warn about duplicates. If so,
             // see if there
             // are unresolved duplicates, and warn if yes.
+        	
+        	int answer = JOptionPane.NO_OPTION; //verificação da importação para um novo banco
+        	
             if (Globals.prefs.getBoolean(JabRefPreferences.WARN_ABOUT_DUPLICATES_IN_INSPECTION)) {
                 for (BibEntry entry : entries) {
 
@@ -732,17 +737,30 @@ public class ImportInspectionDialog extends JabRefDialog implements ImportInspec
                     // is indicated by the entry's group hit status:
                     if (entry.isGroupHit()) {
                         CheckBoxMessage cbm = new CheckBoxMessage(
-                                Localization
-                                        .lang("There are possible duplicates (marked with an icon) that haven't been resolved. Continue?"),
+                                Localization.lang("It was found possible duplicates (maked with an icon) and it is possible to create a new database using these entries (select YES) or merge these entries into the current database (select NO)"),
                                 Localization.lang("Disable this confirmation dialog"), false);
-                        int answer = JOptionPane.showConfirmDialog(ImportInspectionDialog.this, cbm,
+                        answer = JOptionPane.showConfirmDialog(ImportInspectionDialog.this, cbm,
                                 Localization.lang("Duplicates found"), JOptionPane.YES_NO_OPTION);
                         if (cbm.isSelected()) {
                             Globals.prefs.putBoolean(JabRefPreferences.WARN_ABOUT_DUPLICATES_IN_INSPECTION, false);
                         }
-                        if (answer == JOptionPane.NO_OPTION) {
-                            return;
-                        }
+                        
+                        if (answer == JOptionPane.YES_OPTION) {
+                        	BibDatabase newDatabase = new BibDatabase();
+                            MetaData newMetaData = new MetaData();
+                            BibDatabaseContext newDB = new BibDatabaseContext(newDatabase, newMetaData,
+                                    new Defaults(BibDatabaseMode.BIBTEX));
+
+                            List<BibEntry> selected = getSelectedEntries();
+                            BasePanel newTab = new BasePanel(frame, newDB);
+                            frame.addTab(newDB, true);
+                            // Adicionando entradas ao BD
+                            if (selected.size() != 0) {
+                                for (int i = 0; i < selected.size(); i++) {
+                                	newTab.getDatabase().insertEntry(selected.get(i));
+                                }
+                            }
+                        }                       
                         break;
                     }
                 }
@@ -767,7 +785,8 @@ public class ImportInspectionDialog extends JabRefDialog implements ImportInspec
 
             final List<BibEntry> selected = getSelectedEntries();
 
-            if (!selected.isEmpty()) {
+            //caso o usuário opte por mesclar, ele vai inserir normalmente
+            if (!selected.isEmpty() && (answer == JOptionPane.NO_OPTION)) {
                 addSelectedEntries(ce, selected);
             }
 
@@ -1252,14 +1271,11 @@ public class ImportInspectionDialog extends JabRefDialog implements ImportInspec
         }
 
         @Override
-        public void downloadComplete(FileListEntry file) {
+        public void downloadComplete(LinkedFile file) {
             ImportInspectionDialog.this.toFront(); // Hack
-            FileListTableModel localModel = new FileListTableModel();
-            entry.getField(FieldName.FILE).ifPresent(localModel::setContent);
-            localModel.addEntry(localModel.getRowCount(), file);
             entries.getReadWriteLock().writeLock().lock();
             try {
-                entry.setField(FieldName.FILE, localModel.getStringRepresentation());
+                entry.addFile(file);
             } finally {
                 entries.getReadWriteLock().writeLock().unlock();
             }
@@ -1328,16 +1344,13 @@ public class ImportInspectionDialog extends JabRefDialog implements ImportInspec
                 return;
             }
             entry = selectionModel.getSelected().get(0);
-            FileListEntry flEntry = new FileListEntry("", "");
-            FileListEntryEditor editor = new FileListEntryEditor(frame, flEntry, false, true, bibDatabaseContext, true);
+            LinkedFile flEntry = new LinkedFile("", "", "");
+            FileListEntryEditor editor = new FileListEntryEditor(flEntry, false, true, bibDatabaseContext, true);
             editor.setVisible(true, true);
             if (editor.okPressed()) {
-                FileListTableModel localModel = new FileListTableModel();
-                entry.getField(FieldName.FILE).ifPresent(localModel::setContent);
-                localModel.addEntry(localModel.getRowCount(), flEntry);
                 entries.getReadWriteLock().writeLock().lock();
                 try {
-                    entry.setField(FieldName.FILE, localModel.getStringRepresentation());
+                    entry.addFile(flEntry);
                 } finally {
                     entries.getReadWriteLock().writeLock().unlock();
                 }
@@ -1346,14 +1359,11 @@ public class ImportInspectionDialog extends JabRefDialog implements ImportInspec
         }
 
         @Override
-        public void downloadComplete(FileListEntry file) {
+        public void downloadComplete(LinkedFile file) {
             ImportInspectionDialog.this.toFront(); // Hack
-            FileListTableModel localModel = new FileListTableModel();
-            entry.getField(FieldName.FILE).ifPresent(localModel::setContent);
-            localModel.addEntry(localModel.getRowCount(), file);
             entries.getReadWriteLock().writeLock().lock();
             try {
-                entry.setField(FieldName.FILE, localModel.getStringRepresentation());
+                entry.addFile(file);
             } finally {
                 entries.getReadWriteLock().writeLock().unlock();
             }
