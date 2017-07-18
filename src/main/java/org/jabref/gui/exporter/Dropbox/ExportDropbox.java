@@ -33,10 +33,9 @@ public class ExportDropbox {
 
     private static final Log LOGGER = LogFactory.getLog(ExportDropbox.class);
 
-    private ExportDropbox() {
+    public ExportDropbox() {
     }
-
-
+    
     /**
      * Create an AbstractAction for performing an export operation.
      *
@@ -139,8 +138,7 @@ public class ExportDropbox {
         return new InternalExportAction(frame, selectedOnly);
     }
     
-    
-    static void funcDropbox(String accessToken, InputStream inputStream) throws DbxException, IOException {
+    public static void funcDropbox(String accessToken, InputStream inputStream) throws DbxException, IOException {
     	DbxRequestConfig config = new DbxRequestConfig(
                 "JavaTutorial/1.0", Locale.getDefault().toString());
                         
