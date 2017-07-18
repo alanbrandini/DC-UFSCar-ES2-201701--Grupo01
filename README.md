@@ -29,6 +29,7 @@ As tarefas realizadas pela equipe formas separadas a seguir, indicando-se seus r
 >> - Criar um novo arquivo (database) quando existirem entradas duplicadas no arquivo corrente (current database) e o arquivo que está sendo importado (considerando formatos BibTeX e CSV)
 >> - Arquivo: https://github.com/alanbrandini/DC-UFSCar-ES2-201701-Grupo01/blob/master/src/main/java/org/jabref/gui/importer/ImportInspectionDialog.java
 >> - Funcionalidade de exportação para o Dropbox.
+>> - Arquivo: https://github.com/alanbrandini/DC-UFSCar-ES2-201701-Grupo01/blob/master/src/main/java/org/jabref/gui/exporter/Dropbox/ExportDropbox.java
 
 
 # JabRef Development Version
