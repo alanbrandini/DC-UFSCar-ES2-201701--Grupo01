@@ -88,6 +88,7 @@ import org.jabref.gui.exporter.ExportAction;
 import org.jabref.gui.exporter.ExportCustomizationDialog;
 import org.jabref.gui.exporter.SaveAllAction;
 import org.jabref.gui.exporter.SaveDatabaseAction;
+import org.jabref.gui.exporter.Dropbox.ExportDropbox;
 import org.jabref.gui.externalfiletype.ExternalFileTypeEditor;
 import org.jabref.gui.groups.EntryTableTransferHandler;
 import org.jabref.gui.groups.GroupSidePane;
@@ -452,6 +453,8 @@ public class JabRefFrame extends JFrame implements OutputPrinter {
     private JTabbedPane tabbedPane; // initialized at constructor
     private final AbstractAction exportAll = ExportAction.getExportAction(this, false);
     private final AbstractAction exportSelected = ExportAction.getExportAction(this, true);
+    private final AbstractAction exportAllDropbox = ExportDropbox.getExportAction(this, false);
+    private final AbstractAction exportSelectedDropbox = ExportDropbox.getExportAction(this, true);
     /* References to the toggle buttons in the toolbar */
     private JToggleButton previewToggle;
     private JMenu rankSubMenu;
@@ -1053,6 +1056,8 @@ public class JabRefFrame extends JFrame implements OutputPrinter {
         file.add(importCurrent);
         file.add(exportAll);
         file.add(exportSelected);
+        file.add(exportAllDropbox);
+        file.add(exportSelectedDropbox);
         file.addSeparator();
         file.add(connectToSharedDatabaseAction);
         file.add(pullChangesFromSharedDatabase);
